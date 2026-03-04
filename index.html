@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Менеджер заметок</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Менеджер заметок</h1>
+            <div class="stats">
+                <span id="notesCount">Загрузка...</span>
+                <span id="lastUpdate">—</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="note-form-container">
+                <h2 id="formTitle">Новая заметка</h2>
+                <form id="noteForm">
+                    <input type="hidden" id="noteId">
+                    
+                    <div class="form-group">
+                        <label for="title">Заголовок *</label>
+                        <input type="text" id="title" name="title" required maxlength="100">
+                        <span class="error-message" id="titleError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Содержание *</label>
+                        <textarea id="content" name="content" required maxlength="1000" rows="4"></textarea>
+                        <span class="error-message" id="contentError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Категория</label>
+                        <select id="category" name="category">
+                            <option value="Личное">Личное</option>
+                            <option value="Работа">Работа</option>
+                            <option value="Учеба">Учеба</option>
+                            <option value="Идеи">Идеи</option>
+                            <option value="Важное">Важное</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Изображение (необязательно)</label>
+                        <input type="file" id="image" name="image" accept="image/*">
+                        <small>Максимальный размер: 2MB</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Сохранить</button>
+                        <button type="button" class="btn btn-secondary" id="cancelEdit">Отмена</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Поиск по заметкам..."
+                    >
+                    <span class="search-spinner" id="searchSpinner" style="display: none;">⏳</span>
+                </div>
+                
+                <div class="filters">
+                    <select id="categoryFilter">
+                        <option value="">Все категории</option>
+                        <option value="Личное">Личное</option>
+                        <option value="Работа">Работа</option>
+                        <option value="Учеба">Учеба</option>
+                        <option value="Идеи">Идеи</option>
+                        <option value="Важное">Важное</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="notes-container">
+                <div id="loadingIndicator" class="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>Загрузка заметок...</p>
+                </div>
+                
+                <div id="errorContainer" class="error-container" style="display: none;">
+                    <p id="errorMessage"></p>
+                    <button class="btn btn-secondary" onclick="loadNotes(true)">Повторить</button>
+                </div>
+
+                <div id="notesList" class="notes-grid"></div>
+                
+                <div id="infiniteScrollTrigger" class="infinite-scroll-trigger">
+                    <div class="spinner-small" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>Подтверждение удаления</h3>
+            <p>Вы уверены, что хотите удалить эту заметку?</p>
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="confirmDelete">Удалить</button>
+                <button class="btn btn-secondary" id="cancelDelete">Отмена</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
